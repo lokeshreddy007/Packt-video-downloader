@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <label id="arrayMessage"> </label>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        //  Get details 
+        async function getUser(i) {
+            await axios.get(
+                'https://services.packtpub.com/products-v1/products/9781838648770/p1/video1_' + i, {
+                    headers: {
+                        authorization: localStorage.getItem("pactk-token"),
+                    },
+                }).then((res) => {
+                console.log(" THIs the data of " + i + JSON.stringify(res.data.data)) // JSON.stringify(obj)
+                arr.push(JSON.stringify(res.data.data) + '<br />')
+            }).catch((error) => {
+                console.log(error)
+                // throw 'Unable to fetch current user'
+            })
+        }
+        var j = 8;
+        var arr = [];
+        for (var i = 1; i <= j; i++) {
+            getUser(i)
+        }
+        function explode() {
+            console.log(arr);
+            $("#arrayMessage").html(arr);
+        }
+        setTimeout(explode, 3000);
+        // 
+    })
+    </script>
+</body>
+
+</html>
