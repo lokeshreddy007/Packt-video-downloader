@@ -32,4 +32,4 @@
 }
 
 ```
-5. Need to find way to automatically get url and sownload them
+5. Need to find way to automatically get url and download them
