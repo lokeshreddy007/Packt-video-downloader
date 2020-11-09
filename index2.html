@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Packt - Downloader</title>
+</head>
+
+<body>
+    <h1>Packt-Downloader</h1>
+    <h2>Get Download Link</h2>
+    <input type="button" value="Download JSON" onclick="DownloadJSON()" />
+
+    <br><br>
+    <div id="demo"></div>
+    <button onclick="getData()">Get Data</button>
+    <button onclick="diaplayData()">Display Data</button>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+    // download(ID, Chapter, VideoNumber)
+    // var res = str.split('/'); // array list elemnt
+    //(9) ["https:", "", "subscription.packtpub.com", "video", "programming", "9781839217289", "p2", "video2_1", "-if-statements-in-python"]
+    //
+    // res[7] -- video2_1
+    // res[6]
+    // 
+
+    var links = ['https://subscription.packtpub.com/video/web_development/9781800569638/p1/video1_1/-course-introduction', 'https://subscription.packtpub.com/video/web_development/9781800569638/p1/video1_2/-a-look-at-the-project', 'https://subscription.packtpub.com/video/web_development/9781800569638/p1/video1_3/-environment-setup', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_1/-http-and-the-node-http-module', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_2/-installing-nodemon', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_3/-responding-with-data', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_4/-http-status-codes', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_5/-sending-data-to-the-server', 'https://subscription.packtpub.com/video/web_development/9781800569638/p2/video2_6/-http-methods-and-restful-apis', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_1/-project-specs-and-resources', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_2/-basic-express-server-dotenv-and-git', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_3/-creating-routes-and-responses-in-express', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_4/-using-the-express-router', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_5/-creating-controller-methods', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_6/-intro-to-middleware', 'https://subscription.packtpub.com/video/web_development/9781800569638/p3/video3_7/-postman-environment-and-collections', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_1/-mongodb-atlas-and-compass-setup', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_2/-connecting-to-the-database-with-mongoose', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_3/-colors-in-the-console', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_4/-creating-our-first-model', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_5/-create-bootcamp-post', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_6/-fetching-bootcamps-get', 'https://subscription.packtpub.com/video/web_development/9781800569638/p4/video4_7/-updating-and-deleting-bootcamps-put-and-delete', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_1/-error-handler-middleware', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_2/-custom-errorresponse-class', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_3/-mongoose-error-handling-1', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_4/-mongoose-error-handling-2', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_5/-async-await-middleware', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_6/-mongoose-middleware-and-slugify', 'https://subscription.packtpub.com/video/web_development/9781800569638/p5/video5_7/-geojson-location-and-geocoder-hook-mapquest-api', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_1/-database-seeder-for-bootcamps', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_2/-geospatial-query-get-bootcamps-within-radius', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_3/-advanced-filtering', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_4/-select-and-sorting', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_5/-adding-pagination', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_6/-course-model-and-seeding', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_7/-course-routes-and-controller', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_8/-populate-virtuals-and-cascade-delete', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_9/-single-course-and-add-course', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_10/-update-and-delete-course', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_11/-aggregate-calculating-the-average-course-cost', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_12/-photo-upload-for-bootcamp', 'https://subscription.packtpub.com/video/web_development/9781800569638/p6/video6_13/-advanced-results-middleware', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_1/-user-model', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_2/-user-register-and-encrypting-passwords', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_3/-sign-and-get-json-web-token', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_4/-user-login', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_5/-sending-jwt-in-a-cookie', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_6/-auth-protect-middleware', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_7/-storing-the-token-in-postman', 'https://subscription.packtpub.com/video/web_development/9781800569638/p7/video7_8/-role-authorization', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_1/-bootcamp-and-user-relationship', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_2/-bootcamp-ownership', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_3/-course-ownership', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_4/-forgot-password-generate-token', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_5/-forgot-password-send-email', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_6/-reset-password', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_7/-update-user-details', 'https://subscription.packtpub.com/video/web_development/9781800569638/p8/video8_8/-admin-users-crud', 'https://subscription.packtpub.com/video/web_development/9781800569638/p9/video9_1/-review-model-and-get-reviews', 'https://subscription.packtpub.com/video/web_development/9781800569638/p9/video9_2/-get-single-review-and-update-seeder', 'https://subscription.packtpub.com/video/web_development/9781800569638/p9/video9_3/-add-review-for-bootcamp', 'https://subscription.packtpub.com/video/web_development/9781800569638/p9/video9_4/-aggregate-calculate-average-rating', 'https://subscription.packtpub.com/video/web_development/9781800569638/p9/video9_5/-update-and-delete-reviews', 'https://subscription.packtpub.com/video/web_development/9781800569638/p10/video10_1/-logout-to-clear-token-cookie', 'https://subscription.packtpub.com/video/web_development/9781800569638/p10/video10_2/-prevent-nosql-injection-and-sanitize-data', 'https://subscription.packtpub.com/video/web_development/9781800569638/p10/video10_3/-xss-protection-and-security-headers', 'https://subscription.packtpub.com/video/web_development/9781800569638/p10/video10_4/-rate-limiting-hpp-and-cors', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_1/-documentation-with-postman-and-docgen', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_2/-digital-ocean-droplet-and-server-log-in', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_3/-prepare-and-push-to-github', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_4/-clone-repo-on-server', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_5/-pm2-process-manager-setup', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_6/-nginx-reverse-proxy-setup', 'https://subscription.packtpub.com/video/web_development/9781800569638/p11/video11_7/-domain-ssl-and-wrap-up'];
+    // console.log(links)
+
+    // $(document).ready(function() {
+    //  Get details 
+    //     async function getVideoDownloadLink(id, chapter, video_number) {
+    //         await axios.get(
+    //             'https://services.packtpub.com/products-v1/products/' + id + '/' + chapter + '/' + video_number, {
+    //                 headers: {
+    //                     authorization: localStorage.getItem("pactk-token"),
+    //                 },
+    //             }).then((res) => {
+    //             console.log(" THIs the data of " + i + JSON.stringify(res.data.data)) // JSON.stringify(obj)
+    //             arr.push(JSON.stringify(res.data.data) + '<br />')
+    //         }).catch((error) => {
+    //             console.log(error)
+    //             // throw 'Unable to fetch current user'
+    //         })
+    //     }
+    //     var j = 2;
+    //     var arr = [];
+    //     for (var i = 1; i <= j; i++) {
+    //         getUser(i)
+    //     }
+
+    //     function explode() {
+    //         console.log(arr);
+    //         $("#arrayMessage").html(arr);
+    //     }
+    //     setTimeout(explode, 3000);
+    //     // 
+    var array_List = [];
+
+    async function getData() {
+        for (var i = 0; i < links.length; i++) {
+            // console.log(links[i])
+            var splitLinks = links[i].split("/"); // array list elemnt
+            // console.log(splitLinks[7]);
+            // console.log(splitLinks[6]);
+            // getVideoDownloadLink(splitLinks[5], splitLinks[6], splitLinks[7]);
+            // array_List.push('https://services.packtpub.com/products-v1/products/' + splitLinks[5] + '/' + splitLinks[6] + '/' + splitLinks[7])
+            // console.log(array_List)
+            await axios.get(
+                'https://services.packtpub.com/products-v1/products/' + splitLinks[5] + '/' + splitLinks[6] + '/' + splitLinks[7], {
+                    headers: {
+                        authorization: localStorage.getItem("pactk-token"),
+                    },
+                }).then((res) => {
+                console.log(" THIs the data of " + i + JSON.stringify(res.data.data)) // JSON.stringify(obj)
+                array_List.push(JSON.stringify(res.data.data))
+            }).catch((error) => {
+                console.log(error)
+                // throw 'Unable to fetch current user'
+            })
+        }
+    }
+
+
+    // function getVideoDownloadLink(id, chapter, video_number) {
+    //     console.log('https://services.packtpub.com/products-v1/products/' + id + '/' + chapter + '/' + video_number)
+    //     array_List.push('https://services.packtpub.com/products-v1/products/' + id + '/' + chapter + '/' + video_number)
+    // }
+
+
+
+
+    // })
+val= [ "https://d1ft11egbn8l.cloudfront.net/CSS%20The%20Complete%20Guide%20incl%20Flexbox%20Grid%20and%20Sass/Package/videos/video1_1.mp4?Expires=1604403680&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMWZ0MTFlZ2JuOGwuY2xvdWRmcm9udC5uZXQvQ1NTJTIwVGhlJTIwQ29tcGxldGUlMjBHdWlkZSUyMGluY2wlMjBGbGV4Ym94JTIwR3JpZCUyMGFuZCUyMFNhc3MvUGFja2FnZS92aWRlb3MvdmlkZW8xXzEubXA0IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjA0NDAzNjgwfX19XX0_&Signature=eDzJpAhlsW828koMz9CLFd-nlozTYxBGWhmQ~mFyPRcnI0-m3~kPOVVbqBo172OCG-igFVx2qKlzW62sfR6FpWrvc4IcB83urzSWNls9dxs82le-ezWtwZRECzCKc7gcERTFGDhUzcxqAfi7HA3uYnFlKtUuC1gu3c~~tUTmWNQ_&Key-Pair-Id=APKAJTJLPJQL5PVZ47FA","https://d1ft11egbn8l.cloudfront.net/CSS%20The%20Complete%20Guide%20incl%20Flexbox%20Grid%20and%20Sass/Package/videos/video1_2.mp4?Expires=1604403681&Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly9kMWZ0MTFlZ2JuOGwuY2xvdWRmcm9udC5uZXQvQ1NTJTIwVGhlJTIwQ29tcGxldGUlMjBHdWlkZSUyMGluY2wlMjBGbGV4Ym94JTIwR3JpZCUyMGFuZCUyMFNhc3MvUGFja2FnZS92aWRlb3MvdmlkZW8xXzIubXA0IiwiQ29uZGl0aW9uIjp7IkRhdGVMZXNzVGhhbiI6eyJBV1M6RXBvY2hUaW1lIjoxNjA0NDAzNjgxfX19XX0_&Signature=Nr3qk52~knSs4t1ldf-cXVdiuS0u13pyo8X8338pEWMfY2yGc~jNIYYmNqxRbqJSluv~i1gyvkL8s30xCvOTAuhe84~j2Rweqh-OtcFEFcxfv8OZdP~f3XErrdsRdAZD4C-x13pKR1JNODlUPdcCUzWZyYPNm8nf1Q3U4JCdrXs_&Key-Pair-Id=APKAJTJLPJQL5PVZ47FA"]
+    function diaplayData() {
+        // var fruits = ["Banana", "Orange", "Apple", "Mango"];
+        // document.getElementById("demo").innerHTML = array_List.toString();
+        $("#demo").html(array_List);
+        console.log(array_List)
+    }
+
+ function DownloadJSON() {
+        //Build a JSON array containing Customer records.
+ 
+        //Convert JSON Array to string.
+ 
+        //Convert JSON string to BLOB.
+        json = [array_List];
+        var blob1 = new Blob(json, { type: "text/plain;charset=utf-8" });
+ 
+        //Check the Browser.
+        var isIE = false || !!document.documentMode;
+        if (isIE) {
+            window.navigator.msSaveBlob(blob1, "Customers.txt");
+        } else {
+            var url = window.URL || window.webkitURL;
+            link = url.createObjectURL(blob1);
+            var a = document.createElement("a");
+            a.download = "Customers.txt";
+            a.href = link;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
+    // var res = str.split('/'); // array list elemnt
+    //(9) ["https:", "", "subscription.packtpub.com", "video", "programming", "9781839217289", "p2", "video2_1", "-if-statements-in-python"]
+    //
+    // res[7] -- video2_1
+    // res[6]
+    // 
+    //
+    </script>
+</body>
+
+</html>
